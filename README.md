@@ -11,12 +11,11 @@ binserve for now.
 
 ## Todo
 
-## Frozen dependencies
+### Frozen dependencies
 
 The following dependencies are frozen at previous versions due to incompatibilities.  Check and update or delete:
 
 * actix-web-lab
-* ahash
 * compact_str
 * jwalk
 * minify-html-onepass
