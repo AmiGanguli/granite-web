@@ -1,6 +1,6 @@
 pub(crate) mod constants;
 pub(crate) mod engine;
-pub(super) mod config;
+pub(super) mod server_config;
 pub(super) mod routes;
 pub(super) mod files;
 pub(super) mod server;

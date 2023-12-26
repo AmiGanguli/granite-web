@@ -6,7 +6,7 @@ use std::io::BufReader;
 
 use anyhow::{Context, Result};
 
-use super::config::CONFIG_STATE;
+use super::server_config::CONFIG_STATE;
 
 use crate::cli::messages::{Type, push_message};
 

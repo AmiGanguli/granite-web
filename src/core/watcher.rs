@@ -9,7 +9,7 @@ use std::sync::mpsc::channel;
 use std::collections::HashMap;
 
 use super::routes::{RouteHandle, Type, ROUTEMAP};
-use super::config::ServerConfig;
+use super::server_config::ServerConfig;
 use super::templates;
 
 /// Watch for filesystem for updates/writes and hot reload the server state.

@@ -2,7 +2,7 @@ use handlebars::{Handlebars, Context as HbsContext};
 
 use anyhow::{Context, Result};
 
-use super::config::ServerConfig;
+use super::server_config::ServerConfig;
 
 /// Prepare the partials and template variables for handlebars at initialization.
 pub fn render_templates(config: &ServerConfig)

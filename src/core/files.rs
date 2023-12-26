@@ -16,7 +16,7 @@ use handlebars::{Handlebars, Context as HbsContext};
 
 use minify_html_onepass::Cfg;
 
-use super::config::CONFIG_STATE;
+use super::server_config::CONFIG_STATE;
 
 /// Represents a static file
 #[derive(Debug)]

@@ -18,7 +18,7 @@ use std::path::{Path, PathBuf};
 
 use super::{
     routes::{ROUTEMAP, Type},
-    config::{CONFIG_STATE, ServerConfig},
+    server_config::{CONFIG_STATE, ServerConfig},
     tls
 };
 

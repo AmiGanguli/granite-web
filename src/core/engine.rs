@@ -9,7 +9,7 @@ use std::io::Write;
 use super::{
     files, server, templates, watcher,
     routes::RouteHandle,
-    config::ServerConfig,
+    server_config::ServerConfig,
 };
 
 use crate::cli::messages::{Type, push_message};
