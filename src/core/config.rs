@@ -7,8 +7,6 @@ use std::io::{self, prelude::*};
 use serde::{Serialize, Deserialize};
 use serde_json;
 
-pub const CONFIG_FILE: &'static str = "binserve.json";
-
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Tls {
     pub host: String,
@@ -122,8 +120,8 @@ pub static CONFIG_STATE: Lazy<Mutex<BinserveConfig>> = Lazy::new(|| {
 
 impl BinserveConfig {
     /// Read and serialize the config file.
-    pub fn read() -> io::Result<Self> {
-        let config_file = File::open(CONFIG_FILE)?;
+    pub fn read(config_file: &PathBuf) -> io::Result<Self> {
+        let config_file = File::open(config_file)?;
         let buf_reader = BufReader::new(config_file);
         let config: BinserveConfig = serde_json::from_reader(buf_reader)?;
         
@@ -134,12 +132,12 @@ impl BinserveConfig {
     }
 
     /// Generate a boilerplate binserve configuration file.
-    pub fn generate_default_config() -> io::Result<()> {
-        if !Path::new(CONFIG_FILE).exists() {
+    pub fn generate_default_config(config_file: &PathBuf) -> io::Result<()> {
+        if !Path::new(config_file).exists() {
             // this is better than deserializing the `default()`
             // the inlined file has readable formatting.
             let config = include_bytes!("config.json");
-            let mut file = File::create(CONFIG_FILE)?;
+            let mut file = File::create(config_file)?;
             file.write_all(config)?;
         }
 

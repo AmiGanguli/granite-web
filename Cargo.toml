@@ -1,32 +1,42 @@
 [package]
-name = "binserve"
-version = "0.2.0"
+name = "granite-web"
+version = "0.0.0"
 edition = "2021"
+authors = ["Ami Ganguli <ami@dangerousminds.ai>"]
+description = "A content management system and fast web server for static content."
+documentation = "https://dangerousminds.ai/projects/granite/documentation"
+homepage = "https://dangerousminds.ai/projects/granite"
+repository = "https://github.com/AmiGanguli/granite-web"
+license = "MIT OR Apache-2.0 OR BSD-2-Clause"
+
+[[bin]]
+name = "granite"
+path = "src/main.rs"
 
 [dependencies]
-actix-files = "0.6.0"
-actix-web = { version = "4.0.1", features = ["rustls"] }
-actix-web-lab = "0.16.1"
-ahash = "0.7.6"
-anyhow = "1.0.57"
-clap = "3.1.18"
-colored = "2.0.0"
-compact_str = "0.4.0"
-dashmap = "5.3.4"
-env_logger = "0.9.0"
+actix-files = "0.6.2"
+actix-web = { version = "4.4.1", features = ["rustls"] }
+actix-web-lab = "0.16.9"
+ahash = "0.7.7"
+anyhow = "1.0.76"
+clap = { version = "4.4.11", features = ["derive"] }
+colored = "2.1.0"
+compact_str = "0.4.1"
+dashmap = "5.5.3"
+env_logger = "0.9.3"
 etag = { version = "3.0.0", features = ["std"] }
-handlebars = "4.3.1"
-jwalk = "0.6.0"
-minify-html-onepass = "0.8.0"
+handlebars = "4.5.0"
+jwalk = "0.6.2"
+minify-html-onepass = "0.8.1"
 new_mime_guess = "4.0.1"
 notify = "4.0.17"
-num_cpus = "1.13.1"
-once_cell = { version = "1.12.0", features = ["parking_lot"] }
+num_cpus = "1.16.0"
+once_cell = { version = "1.19.0", features = ["parking_lot"] }
 parking_lot = "0.12.1"
-rustls = "0.20.6"
-rustls-pemfile = "1.0.0"
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = "1.0.81"
+rustls = "0.20.9"
+rustls-pemfile = "1.0.4"
+serde = { version = "1.0.193", features = ["derive"] }
+serde_json = "1.0.108"
 
 [profile.release]
 opt-level = 3

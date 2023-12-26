@@ -9,12 +9,12 @@ use std::sync::mpsc::channel;
 use std::collections::HashMap;
 
 use super::routes::{RouteHandle, Type, ROUTEMAP};
-use super::config::{CONFIG_FILE, BinserveConfig};
+use super::config::BinserveConfig;
 use super::templates;
 
 /// Watch for filesystem for updates/writes and hot reload the server state.
-pub fn hot_reload_files() -> anyhow::Result<()> {
-    let config_state = BinserveConfig::read()?;
+pub fn hot_reload_files(config_file: &PathBuf) -> anyhow::Result<()> {
+    let config_state = BinserveConfig::read(config_file)?;
 
     // check if hot reload is enabled or not
     if !config_state.config.enable_hot_reload {
@@ -31,9 +31,9 @@ pub fn hot_reload_files() -> anyhow::Result<()> {
     let mut file_mapping: HashMap<PathBuf, CompactString> = HashMap::with_capacity(ROUTEMAP.len());
 
     // add the binserve config file to the hot reloader
-    let config_file_path = PathBuf::from(CONFIG_FILE);
+    let config_file_path = PathBuf::from(config_file);
     let abs_config_path = fs::canonicalize(config_file_path)?;
-    watcher.watch(CONFIG_FILE, RecursiveMode::Recursive)?;
+    watcher.watch(config_file, RecursiveMode::Recursive)?;
 
     // Add a path to be watched. All files and directories at that path and
     // below will be monitored for changes.
@@ -67,7 +67,7 @@ pub fn hot_reload_files() -> anyhow::Result<()> {
                     DebouncedEvent::Remove(file_path) => {
                         if file_path == abs_config_path {
                             // read the configuration file
-                            let config = BinserveConfig::read()?;
+                            let config = BinserveConfig::read(config_file)?;
 
                             // prepare template partials
                             let handlebars_handle = templates::render_templates(&config)?;
@@ -79,7 +79,7 @@ pub fn hot_reload_files() -> anyhow::Result<()> {
                         match file_mapping.get(&file_path) {
                             Some(route_key) => {
                                 // read the configuration file
-                                let config = BinserveConfig::read()?;
+                                let config = BinserveConfig::read(config_file)?;
 
                                 // prepare template partials
                                 let handlebars_handle = templates::render_templates(&config)?;

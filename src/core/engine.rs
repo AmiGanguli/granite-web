@@ -1,4 +1,7 @@
+use std::path::PathBuf;
+
 use crate::cli::interface;
+use clap::Parser;
 
 use super::{
     files, server, templates, watcher,
@@ -10,21 +13,29 @@ use crate::cli::messages::{Type, push_message};
 
 pub fn init() -> anyhow::Result<()> {
     let start_time = std::time::Instant::now();
-
-    // generate the boilerplate starter public directory
-    files::generate_starter_boilerplate()?;
-
-    // generate the boilerplate configuration file
-    BinserveConfig::generate_default_config()?;
-
-    // read the configuration file
-    let mut config = BinserveConfig::read()?;
+    let mut config_file = PathBuf::from("binserve.json");
 
     // override with cli configurations if any
-    let cli_args = interface::args();
-    cli_args.value_of("host").map(|host| config.server.host = host.into());
-    cli_args.value_of("tls_key").map(|tls_key| config.server.tls.key = tls_key.into());
-    cli_args.value_of("tls_cert").map(|tls_cert| config.server.tls.key = tls_cert.into());
+    let cli_args = interface::Interface::parse();
+    if let Some(config_override) = cli_args.config {
+        config_file = config_override.clone();
+    }
+
+    // generate the boilerplate starter public directory
+    files::generate_starter_boilerplate(&config_file)?;
+
+    // generate the boilerplate configuration file
+    BinserveConfig::generate_default_config(&config_file)?;
+
+    // read the configuration file
+    let mut config = BinserveConfig::read(&config_file)?;
+
+    if let Some(tls_key) = cli_args.tls_key {
+        config.server.tls.key = tls_key.clone();
+    }
+    if let Some(tls_cert) = cli_args.tls_cert {
+        config.server.tls.cert = tls_cert.clone();
+    }
 
     // prepare template partials
     let handlebars_handle = templates::render_templates(&config)?;
@@ -61,12 +72,13 @@ pub fn init() -> anyhow::Result<()> {
     }
 
     // start the hot reloader (file wacther)
-    std::thread::spawn(|| {
-        watcher::hot_reload_files()
+    let hot_load_config_file = config_file.clone();
+    std::thread::spawn(move || {
+        watcher::hot_reload_files(&hot_load_config_file)
     });
 
     // and finally server take off!
-    server::run_server(config)?;
+    server::run_server(&config_file, config)?;
 
     Ok(())
 }

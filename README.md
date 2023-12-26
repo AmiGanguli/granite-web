@@ -9,9 +9,21 @@ expect to replace just about everything over time.  I'm grateful to Mufeed for p
 Granite is no ready for production use.  If you need an excellent static web server, please stick with the original
 binserve for now.
 
-Original binserve README is below until I write my own.
+## Todo
 
-# `binserve` :rocket::crab:
+## Frozen dependencies
+
+The following dependencies are frozen at previous versions due to incompatibilities.  Check and update or delete:
+
+* actix-web-lab
+* ahash
+* clap
+* compact_str
+* env_logger
+* jwalk
+* minify-html-onepass
+* rustls
+* rustls-pemfile
 
 A [**fast**](#benchmarks) static web server with **TLS** (HTTPS), **Routing**, **Hot Reloading**, **Caching**, **Templating**, and **Security** in a single-binary you can set up with zero code.
 

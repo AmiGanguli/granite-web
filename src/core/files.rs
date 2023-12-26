@@ -16,7 +16,7 @@ use handlebars::{Handlebars, Context as HbsContext};
 
 use minify_html_onepass::Cfg;
 
-use super::config::{CONFIG_FILE, CONFIG_STATE};
+use super::config::CONFIG_STATE;
 
 /// Represents a static file
 #[derive(Debug)]
@@ -191,10 +191,10 @@ pub fn generate_not_found() -> Result<StaticFile> {
 }
 
 /// Generate the starter boilerplate.
-pub fn generate_starter_boilerplate() -> io::Result<()> {
+pub fn generate_starter_boilerplate(config_file: &PathBuf) -> io::Result<()> {
     // if the config file is not there, that means it's the first run
     // the configuration boilerplate generation does the same thing
-    if !Path::new(CONFIG_FILE).exists() && !Path::new("public").exists() {
+    if !Path::new(config_file).exists() && !Path::new("public").exists() {
         // contain the boilerplate starter code in binary
         let starter_directory: HashMap<PathBuf, Vec<u8>> = HashMap::from([
             // public root directory
