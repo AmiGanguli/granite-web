@@ -2,10 +2,10 @@ use handlebars::{Handlebars, Context as HbsContext};
 
 use anyhow::{Context, Result};
 
-use super::config::BinserveConfig;
+use super::config::ServerConfig;
 
 /// Prepare the partials and template variables for handlebars at initialization.
-pub fn render_templates(config: &BinserveConfig)
+pub fn render_templates(config: &ServerConfig)
 -> Result<(Handlebars<'static>, HbsContext)> {
     let mut handlebars_reg = Handlebars::new();
 

@@ -93,7 +93,7 @@ impl Default for Config {
 }
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-pub struct BinserveConfig {
+pub struct ServerConfig {
     pub server: Server,
     pub routes: HashMap<String, PathBuf>,
 
@@ -114,16 +114,16 @@ use once_cell::sync::Lazy;
 use parking_lot::Mutex;
 
 /// A universal config state
-pub static CONFIG_STATE: Lazy<Mutex<BinserveConfig>> = Lazy::new(|| {
-    Mutex::new(BinserveConfig::default())
+pub static CONFIG_STATE: Lazy<Mutex<ServerConfig>> = Lazy::new(|| {
+    Mutex::new(ServerConfig::default())
 });
 
-impl BinserveConfig {
+impl ServerConfig {
     /// Read and serialize the config file.
     pub fn read(config_file: &PathBuf) -> io::Result<Self> {
         let config_file = File::open(config_file)?;
         let buf_reader = BufReader::new(config_file);
-        let config: BinserveConfig = serde_json::from_reader(buf_reader)?;
+        let config: ServerConfig = serde_json::from_reader(buf_reader)?;
         
         // update global config state
         *CONFIG_STATE.lock() = config.to_owned();

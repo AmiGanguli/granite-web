@@ -18,7 +18,7 @@ use std::path::{Path, PathBuf};
 
 use super::{
     routes::{ROUTEMAP, Type},
-    config::{CONFIG_STATE, BinserveConfig},
+    config::{CONFIG_STATE, ServerConfig},
     tls
 };
 
@@ -142,7 +142,7 @@ async fn router(req: HttpRequest) -> Result<HttpResponse> {
 
 /// Run the actix-web server.
 #[actix_web::main]
-pub async fn run_server(config_file: &PathBuf, config_state: BinserveConfig) -> std::io::Result<()> {
+pub async fn run_server(config_file: &PathBuf, config_state: ServerConfig) -> std::io::Result<()> {
     let mut http_server = HttpServer::new(move || {
         let mut app_instance = App::new()
             .wrap({
@@ -262,7 +262,7 @@ pub async fn run_server(config_file: &PathBuf, config_state: BinserveConfig) -> 
     .keep_alive(KeepAlive::Os);
 
     // enable TLS connection
-    let config_state = BinserveConfig::read(config_file)?;
+    let config_state = ServerConfig::read(config_file)?;
 
     if config_state.server.tls.enable {
         let tls_host = &config_state.server.tls.host;

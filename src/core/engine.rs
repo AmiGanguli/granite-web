@@ -9,7 +9,7 @@ use std::io::Write;
 use super::{
     files, server, templates, watcher,
     routes::RouteHandle,
-    config::BinserveConfig,
+    config::ServerConfig,
 };
 
 use crate::cli::messages::{Type, push_message};
@@ -44,10 +44,10 @@ pub fn init() -> anyhow::Result<()> {
     files::generate_starter_boilerplate(&config_file)?;
 
     // generate the boilerplate configuration file
-    BinserveConfig::generate_default_config(&config_file)?;
+    ServerConfig::generate_default_config(&config_file)?;
 
     // read the configuration file
-    let mut config = BinserveConfig::read(&config_file)?;
+    let mut config = ServerConfig::read(&config_file)?;
 
     if let Some(tls_key) = cli_args.tls_key {
         config.server.tls.key = tls_key.clone();
