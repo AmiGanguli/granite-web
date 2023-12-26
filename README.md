@@ -1,5 +1,16 @@
 <img src="https://raw.githubusercontent.com/mufeedvh/binserve/master/assets/binserve-logo.png" alt="binserve logo" width="250" align="right">
 
+# `granite-web`
+
+Granite is forked from Mufeed VH's binserve. His excellent work has many of the features I need for Granite, so 
+I've used it as a starting point.  My objectives for Granite are quite different from his, however, so I 
+expect to replace just about everything over time.  I'm grateful to Mufeed for providing an excellent foundation.
+
+Granite is no ready for production use.  If you need an excellent static web server, please stick with the original
+binserve for now.
+
+Original binserve README is below until I write my own.
+
 # `binserve` :rocket::crab:
 
 A [**fast**](#benchmarks) static web server with **TLS** (HTTPS), **Routing**, **Hot Reloading**, **Caching**, **Templating**, and **Security** in a single-binary you can set up with zero code.
