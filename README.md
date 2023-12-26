@@ -17,9 +17,7 @@ The following dependencies are frozen at previous versions due to incompatibilit
 
 * actix-web-lab
 * ahash
-* clap
 * compact_str
-* env_logger
 * jwalk
 * minify-html-onepass
 * rustls

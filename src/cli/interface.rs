@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 use clap::{Parser, Subcommand};
+use tracing::Level;
 
 /// Prints an ASCII art banner to look cool!
 pub fn banner() {
@@ -30,6 +31,10 @@ pub struct Interface {
     /// Log file. Opened before chroot.
     #[arg(short, long, value_name = "FILE")]
     pub log_file: Option<PathBuf>,
+
+    /// Verbosty of log files 
+    #[arg(short, long, default_value = "INFO")]
+    pub verbosity: Level,
 
     #[command(subcommand)]
     pub command: Option<Commands>,

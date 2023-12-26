@@ -1,7 +1,10 @@
 use std::path::PathBuf;
-
 use crate::cli::interface;
 use clap::Parser;
+use tracing::info;
+use tracing_subscriber::fmt;
+use tracing_appender::rolling;
+use std::io::Write;
 
 use super::{
     files, server, templates, watcher,
@@ -20,6 +23,22 @@ pub fn init() -> anyhow::Result<()> {
     if let Some(config_override) = cli_args.config {
         config_file = config_override.clone();
     }
+
+    // Set up logging
+    let subscriber = fmt::Subscriber::builder()
+        .with_writer(move || {
+            if let Some(path) = &cli_args.log_file {
+                let file_appender = rolling::daily(path, "log");
+                let (non_blocking, _guard) = tracing_appender::non_blocking(file_appender);
+                Box::new(non_blocking) as Box<dyn Write + Send + Sync>
+            } else {
+                Box::new(std::io::stderr()) as Box<dyn Write + Send + Sync>
+            }
+        })
+        .finish();
+
+    tracing::subscriber::set_global_default(subscriber)
+        .expect("setting default subscriber failed");
 
     // generate the boilerplate starter public directory
     files::generate_starter_boilerplate(&config_file)?;
@@ -78,7 +97,8 @@ pub fn init() -> anyhow::Result<()> {
     });
 
     // and finally server take off!
+    info!("Starting server.");
     server::run_server(&config_file, config)?;
-
+    info!("Server exited.");
     Ok(())
 }

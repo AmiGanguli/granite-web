@@ -1,6 +1,6 @@
 use actix_web::{
     web, Result,
-    middleware::{self, Logger, Compress, Condition},
+    middleware::{self, Compress, Condition},
     http::{
         KeepAlive,
         header::{
@@ -145,23 +145,6 @@ async fn router(req: HttpRequest) -> Result<HttpResponse> {
 pub async fn run_server(config_file: &PathBuf, config_state: BinserveConfig) -> std::io::Result<()> {
     let mut http_server = HttpServer::new(move || {
         let mut app_instance = App::new()
-            .wrap({
-                // by default env has to be initialized to log events
-                let mut logger = Logger::new("");
-
-                // enable logging middleware
-                if config_state.config.enable_logging {
-                    env_logger::try_init_from_env(
-                        env_logger::Env::new().default_filter_or("info")
-                    ).unwrap_or_default();
-
-                    logger = Logger::new(
-                        "%a \"%r\" %s %b \"%{Referer}i\" \"%{User-Agent}i\" %T"
-                    );
-                }
-
-                logger
-            })
             .wrap({
                 let mut headers_middleware = middleware::DefaultHeaders::new();
 
